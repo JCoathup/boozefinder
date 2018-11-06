@@ -32,7 +32,6 @@ class App extends Component {
           console.log("tracking...", position.coords.latitude, position.coords.longitude);
           let newPos = {lat: x, lng: y}
           this.setState({pos:newPos});
-          userMarker = null;
           this.showUserLocation(map, newPos);
         });
   }
@@ -104,6 +103,9 @@ class App extends Component {
   showUserLocation = (map, newPos) => {
     newPos = newPos || pos;
     //userMarker = null;
+    if (userMarker && userMarker.setMap) {
+      marker.setMap(null);
+    }
     userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
       map: map,
