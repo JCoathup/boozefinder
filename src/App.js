@@ -32,6 +32,7 @@ class App extends Component {
           console.log("tracking...", position.coords.latitude, position.coords.longitude);
           let newPos = {lat: x, lng: y}
           this.setState({pos:newPos});
+          userMarker = null;
           this.showUserLocation(map, newPos);
         });
   }
