@@ -103,16 +103,14 @@ class App extends Component {
   showUserLocation = (map, newPos) => {
     newPos = newPos || pos;
     //userMarker = null;
-    if (userMarker == null){
-      userMarker = new window.google.maps.Marker({
-        position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
-        map: map,
-        icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
-      });
-    } else {
-      userMarker.setPosition(map.getCenter());
+    if (userMarker && userMarker.setMap) {
+      userMarker.setMap(null);
     }
-
+    userMarker = new window.google.maps.Marker({
+      position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
+      map: map,
+      icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
+    });
     //userInfoWindow = new window.google.maps.InfoWindow;
     //userInfoWindow.setPosition(this.state.pos);
     //userInfoWindow.setContent('Location found.');
