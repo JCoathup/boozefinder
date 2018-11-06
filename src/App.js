@@ -30,10 +30,10 @@ class App extends Component {
           let x = position.coords.latitude;
           let y = position.coords.longitude;
           console.log("tracking...", position.coords.latitude, position.coords.longitude);
-          let newPos = {x, y}
+          let newPos = {lat: x, lng: y}
           this.setState({pos:newPos});
 
-          this.showUserLocation(map);
+          this.showUserLocation(map, newPos);
         });
   }
   //render Google map
@@ -101,17 +101,18 @@ class App extends Component {
     this.watchCurrentPosition(map);
   }
   //display infowindow for user location
-  showUserLocation = (map) => {
-    let userMarker = new window.google.maps.Marker({
+  showUserLocation = (map, newPos) => {
+    newPos = newPos || pos;
+  /*  let userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
       map: map,
       icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
-    });
-    //userInfoWindow = new window.google.maps.InfoWindow;
-    //userInfoWindow.setPosition(newPos);
-    //userInfoWindow.setContent('Location found.');
-    //userInfoWindow.open(map);
-    //map.setCenter(newPos);
+    }); */
+    userInfoWindow = new window.google.maps.InfoWindow;
+    userInfoWindow.setPosition(this.state.pos);
+    userInfoWindow.setContent('Location found.');
+    userInfoWindow.open(map);
+    map.setCenter(this.state.pos);
   }
   //ReactJS lifecycle hook
   componentDidMount = () => {
