@@ -71,7 +71,7 @@ class App extends Component {
                            ${myVenue.venue.location.city}<br>
                       <img src="${myVenue.venue.categories[0].icon.prefix}64${myVenue.venue.categories[0].icon.suffix}">`;
 
-      let iconBase = '/beer.png';
+      //let iconBase = '/beer.png';
       let marker = new window.google.maps.Marker({
         position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
