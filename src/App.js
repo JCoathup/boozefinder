@@ -102,7 +102,7 @@ class App extends Component {
   //display infowindow for user location
   showUserLocation = (map, newPos) => {
     newPos = newPos || pos;
-    userMarker = null;
+    //userMarker = null;
     userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
       map: map,
