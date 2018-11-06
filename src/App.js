@@ -10,7 +10,7 @@ class App extends Component {
   }
   //get user location
   getLocation = () => {
-    if (navigator.geolocation.watchPosition) {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         pos = {
           lat: position.coords.latitude,
@@ -23,6 +23,13 @@ class App extends Component {
       })
     }
   }
+  //track user position
+  watchCurrentPosition = (map) => {
+    var positionTimer = navigator.geolocation.watchPosition(
+        (position) => {
+          this.showUserLocation(map);
+        });
+  }
   //render Google map
   renderMap = () => {
     console.log("RENDERING MAP");
@@ -33,7 +40,7 @@ class App extends Component {
   initMap = () => {
     const map = new window.google.maps.Map(document.getElementById('map'), {
     center: {lat: pos.lat, lng: pos.lng},
-    zoom: 15
+    zoom: 18
     });
     this.getVenues(map);
     this.showUserLocation(map);
@@ -84,16 +91,21 @@ class App extends Component {
         infowindow.setContent(contentString);
         infowindow.open(map, marker);
       });
-
     })
+    this.watchCurrentPosition(map);
   }
   //display infowindow for user location
   showUserLocation = (map) => {
-    userInfoWindow = new window.google.maps.InfoWindow;
-    userInfoWindow.setPosition(pos);
-    userInfoWindow.setContent('Location found.');
-    userInfoWindow.open(map);
-    map.setCenter(pos);
+    let userMarker = new window.google.maps.Marker({
+      position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
+      map: map,
+      icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
+    });
+    //userInfoWindow = new window.google.maps.InfoWindow;
+    //userInfoWindow.setPosition(pos);
+    //userInfoWindow.setContent('Location found.');
+    //userInfoWindow.open(map);
+    //map.setCenter(pos);
   }
   //ReactJS lifecycle hook
   componentDidMount = () => {
