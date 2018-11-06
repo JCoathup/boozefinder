@@ -27,6 +27,7 @@ class App extends Component {
   watchCurrentPosition = (map) => {
     var positionTimer = navigator.geolocation.watchPosition(
         (position) => {
+          console.log("tracking...");
           this.showUserLocation(map);
         });
   }
