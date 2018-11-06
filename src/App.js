@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
-let pos, infowindow, userInfoWindow;
+let pos, infowindow, userInfoWindow, userMarker;
 
 class App extends Component {
   state = {
@@ -101,9 +101,8 @@ class App extends Component {
   }
   //display infowindow for user location
   showUserLocation = (map, newPos) => {
-    userMarker = null;
     newPos = newPos || pos;
-    let userMarker = new window.google.maps.Marker({
+    userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
       map: map,
       icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
