@@ -45,7 +45,7 @@ class App extends Component {
   initMap = () => {
     const map = new window.google.maps.Map(document.getElementById('map'), {
     center: {lat: pos.lat, lng: pos.lng},
-    zoom: 18
+    zoom: 16
     });
     this.getVenues(map);
     this.showUserLocation(map);
@@ -102,6 +102,7 @@ class App extends Component {
   //display infowindow for user location
   showUserLocation = (map, newPos) => {
     newPos = newPos || pos;
+    userMarker = null;
     userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
       map: map,
