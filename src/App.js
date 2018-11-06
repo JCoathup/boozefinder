@@ -104,7 +104,7 @@ class App extends Component {
     newPos = newPos || pos;
     //userMarker = null;
     if (userMarker && userMarker.setMap) {
-      marker.setMap(null);
+      userMarker.setMap(null);
     }
     userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
