@@ -75,7 +75,7 @@ class App extends Component {
       let marker = new window.google.maps.Marker({
         position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
-        icon: 'https://www.bmipublishing.co.uk/image/beers.png?raw=true',
+        icon: 'https://boozefinder.herokuapp.com/images/beer32.png?raw=true',
         title: myVenue.venue.name
       });
       //call InfoWindow outside of loop so only displays one at a time
