@@ -100,19 +100,18 @@ class App extends Component {
     this.watchCurrentPosition(map);
   }
   //display infowindow for user location
-  //call InfoWindow outside of loop so only displays one at a time
-  userInfoWindow = new window.google.maps.InfoWindow;
   showUserLocation = (map, newPos) => {
     newPos = newPos || pos;
-  /*  let userMarker = new window.google.maps.Marker({
+    let userMarker = new window.google.maps.Marker({
       position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
       map: map,
       icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
-    }); */
-    userInfoWindow.setPosition(this.state.pos);
-    userInfoWindow.setContent('Location found.');
-    userInfoWindow.open(map);
-    map.setCenter(this.state.pos);
+    });
+    //userInfoWindow = new window.google.maps.InfoWindow;
+    //userInfoWindow.setPosition(this.state.pos);
+    //userInfoWindow.setContent('Location found.');
+    //userInfoWindow.open(map);
+    //map.setCenter(this.state.pos);
   }
   //ReactJS lifecycle hook
   componentDidMount = () => {
