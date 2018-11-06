@@ -32,7 +32,6 @@ class App extends Component {
           console.log("tracking...", position.coords.latitude, position.coords.longitude);
           let newPos = {lat: x, lng: y}
           this.setState({pos:newPos});
-
           this.showUserLocation(map, newPos);
         });
   }
@@ -101,6 +100,8 @@ class App extends Component {
     this.watchCurrentPosition(map);
   }
   //display infowindow for user location
+  //call InfoWindow outside of loop so only displays one at a time
+  userInfoWindow = new window.google.maps.InfoWindow;
   showUserLocation = (map, newPos) => {
     newPos = newPos || pos;
   /*  let userMarker = new window.google.maps.Marker({
@@ -108,7 +109,6 @@ class App extends Component {
       map: map,
       icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
     }); */
-    userInfoWindow = new window.google.maps.InfoWindow;
     userInfoWindow.setPosition(this.state.pos);
     userInfoWindow.setContent('Location found.');
     userInfoWindow.open(map);
