@@ -45,7 +45,7 @@ class App extends Component {
   initMap = () => {
     const map = new window.google.maps.Map(document.getElementById('map'), {
     center: {lat: pos.lat, lng: pos.lng},
-    zoom: 16
+    zoom: 20
     });
     this.getVenues(map);
     this.showUserLocation(map);
