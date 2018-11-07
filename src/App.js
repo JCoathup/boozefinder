@@ -105,7 +105,7 @@ class App extends Component {
       userMarker = new window.google.maps.Marker({
         position: {lat: this.state.pos.lat, lng: this.state.pos.lng},
         map: map,
-        icon: 'https://boozefinder.herokuapp.com/images/user.jpg?raw=true',
+        icon: 'https://boozefinder.herokuapp.com/images/user.png?raw=true',
       });
     } else {
       userMarker.setPosition(newPos);
