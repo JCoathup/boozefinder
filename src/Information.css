@@ -1,0 +1,22 @@
+.details {
+  background-color: #272b2e;
+  position:fixed;
+  z-index:1;
+  bottom:0;
+  left:0;
+  height:0vh;
+  backface-visibility: hidden;
+  width:100vw;
+  transition: 0.5s ease;
+  padding:0 2%;
+}
+
+.details--active {
+  height:30vh;
+  color: #ccc;
+}
+
+h1, h3, p {
+  display:inline-block;
+  margin-right:1%;
+}

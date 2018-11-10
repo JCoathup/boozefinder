@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
-let pos, infowindow, userInfoWindow, userMarker;
+import Information from './Information';
+import {FOURSQUARE, GOOGLE} from './Config';
+let pos, infowindow, userInfoWindow, userMarker, locName, locAddress, locCity, currentLocation;
 
 class App extends Component {
   state = {
     pos: {},
-    venues: []
+    venues: [],
+    currentLocation: currentLocation
   }
   //get user location
   getLocation = () => {
@@ -29,7 +32,6 @@ class App extends Component {
         (position) => {
           let x = position.coords.latitude;
           let y = position.coords.longitude;
-          console.log("tracking...", position.coords.latitude, position.coords.longitude);
           let newPos = {lat: x, lng: y}
           this.setState({pos:newPos});
           this.showUserLocation(map, newPos);
@@ -38,7 +40,7 @@ class App extends Component {
   //render Google map
   renderMap = () => {
     console.log("RENDERING MAP");
-    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDVMji-eA1V0Dj7Aa_ShGYIMuQBzosZwLU&callback=initMap");
+    loadScript("https://maps.googleapis.com/maps/api/js?key="+GOOGLE.key);
     window.initMap = this.initMap;
   }
   //initialise map
@@ -53,14 +55,12 @@ class App extends Component {
   // get venues from Foursquare
   getVenues = (map) => {
     let parameters = {
-      client_id: "ORCXZEH2S3AYK2PFCHXOQBVV1DAEJNQLMMTIQMORLPI34KL0",
-      client_secret: "Z32R3QF2QLH2K4HJNCYI4ZPKSS5XMDL5CWPHHPG23DFULLA1",
+      client_id: FOURSQUARE.client_id,
+      client_secret: FOURSQUARE.client_secret,
       query: "drinks",
       ll: this.state.pos.lat+","+this.state.pos.lng,
       v: "20182507"
     };
-    console.log("getting venues");
-    console.log("LOOK HERE: ",this.state);
     const endPoint = "https://api.foursquare.com/v2/venues/explore?";
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response => {
@@ -77,7 +77,10 @@ class App extends Component {
   //show venues from Foursquare on map
   listVenues = (map) => {
     this.state.venues.map(myVenue => {
-      console.log("listing venues");
+      let locationName = myVenue.venue.name;
+      let locationAddress =  myVenue.venue.location.address;
+      let locationCity = myVenue.venue.location.city;
+      let venueId = myVenue.venue.id;
       let contentString = `${myVenue.venue.name}<br>
                            ${myVenue.venue.location.address}<br>
                            ${myVenue.venue.location.city}<br>
@@ -91,9 +94,28 @@ class App extends Component {
       });
       //call InfoWindow outside of loop so only displays one at a time
       infowindow = new window.google.maps.InfoWindow;
-      marker.addListener('click', function() {
-        infowindow.setContent(contentString);
-        infowindow.open(map, marker);
+      marker.addListener('click', (e) => {
+        console.log(venueId);
+        this.setState({currentLocation: locationName});
+        locAddress = locationAddress;
+        locCity = locationCity;
+        //infowindow.setContent(contentString);
+        //infowindow.open(map, marker);
+        let details = document.querySelector(".details");
+        if ((locName != this.state.currentLocation) || (!details.classList.contains("details--active"))){
+          if (locName != this.state.currentLocation){
+            this.getVenueInformation(venueId, myVenue);
+          }
+          console.log("OPEN OR KEEP OPEN");
+          details.classList.add("details--active");
+          map.setZoom(14.6);
+        }
+        else {
+            details.classList.remove("details--active");
+            map.setZoom(16);
+            console.log("closing");
+        }
+        locName = locationName;
       });
     })
     this.watchCurrentPosition(map);
@@ -112,6 +134,27 @@ class App extends Component {
     }
 
   }
+  //get individual Venue information (detailed)
+  getVenueInformation = (venueId, myVenue) => {
+    let params = {
+      client_id: FOURSQUARE.client_id,
+      client_secret: FOURSQUARE.client_secret,
+      ll: myVenue.venue.location.lat+","+myVenue.venue.location.lng,
+      v: "20182507"
+    };
+    const endPoint2 = "https://api.foursquare.com/v2/venues/"+venueId+"?";
+    axios.get(endPoint2 + new URLSearchParams(params))
+      .then(response => {
+        console.log(response.data.response.venue);
+        console.log("best photo", response.data.response.venue.bestPhoto.prefix+300+response.data.response.venue.bestPhoto.suffix);
+        console.log(response.data.response.venue.categories[0].name);//bar type
+        console.log("is it open", response.data.response.venue.hours.isOpen);
+        console.log("has food menu", response.data.response.venue.hasMenu);
+      })
+      .catch(error => {
+        console.log("ERROR: " + error);
+      })
+  }
   //ReactJS lifecycle hook
   componentDidMount = () => {
     this.getLocation();
@@ -122,11 +165,11 @@ class App extends Component {
         <main>
           <div id="map"></div>
         </main>
+        <Information name={locName} address={locAddress} city={locCity}/>
       </div>
     );
   }
 }
-
 //enables us to call google script from within ReactJS
 function loadScript (url){
   var index = window.document.getElementsByTagName("script")[0];
