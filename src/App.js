@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 import Information from './Information';
 import {FOURSQUARE, GOOGLE} from './Config';
-let pos, infowindow, userInfoWindow, userMarker, locName, locAddress, currentLocation, bestPhoto;
+let pos, infowindow, userInfoWindow, userMarker, locName, locAddress, currentLocation, bestPhoto, phone, photos = [], attributes = [], categories = [];
 
 class App extends Component {
   state = {
@@ -94,6 +94,9 @@ class App extends Component {
       //call InfoWindow outside of loop so only displays one at a time
       infowindow = new window.google.maps.InfoWindow;
       marker.addListener('click', (e) => {
+        photos = [];
+        attributes = [];
+        categories = [];
         console.log(venueId);
         this.setState({currentLocation: locationName});
         locAddress = locationAddress;
@@ -154,23 +157,42 @@ class App extends Component {
     axios.get(endPoint2 + new URLSearchParams(params))
       .then(response => {
         console.log(response.data.response.venue);
-        console.log("best photo", response.data.response.venue.bestPhoto.prefix+100+response.data.response.venue.bestPhoto.suffix);
         bestPhoto = response.data.response.venue.bestPhoto.prefix+100+response.data.response.venue.bestPhoto.suffix;
-        console.log("categories", response.data.response.venue.categories[0].name);
+        response.data.response.venue.categories.map((category) => {
+          console.log("categories", category.name);
+          categories.push(category.name);
+        })
+        response.data.response.venue.photos.groups[1].items.map((photo) => {
+          console.log("Venue photos", photo.prefix+"100"+photo.suffix);
+          photos.push(photo.prefix+"100"+photo.suffix);
+        })
+        console.log("phone", response.data.response.venue.contact.phone);
+        if (response.data.response.venue.contact.phone != undefined){
+          phone = response.data.response.venue.contact.phone;
+        }
+        response.data.response.venue.tips.groups[0].items.map((tip) => {
+          console.log("tips", tip.text);
+        })
+        response.data.response.venue.attributes.groups.map((attribute) => {
+          if (!attribute.summary){
+            attributes.push(attribute.name);
+          } else {
+            attributes.push(attribute.summary);
+          }
+          console.log("ATTRIBUTE", attribute);
+        })
         let isOpen = document.querySelector(".isOpen");
-        if (response.data.response.venue.hours){
-          console.log("is it open", response.data.response.venue.hours.isOpen);
-          isOpen.style.color = "green";
-        } else if (response.data.response.venue.hours == undefined){
+        if (response.data.response.venue.hours == undefined){
+          console.log("not sure");
           isOpen.style.color = "yellow";
         }
-        else{
+        if (response.data.response.venue.hours.isOpen == true){
+          console.log("is open");
+          isOpen.style.color = "green";
+        } else if (response.data.response.venue.hours.isOpen == false){
+          console.log("shut");
           isOpen.style.color = "red";
         }
-        console.log("has food menu", response.data.response.venue.hasMenu);
-        console.log("Venue photos", response.data.response.venue.photos.groups[1].count);
-        console.log("description", response.data.response.venue.description);
-        console.log("phone", response.data.response.venue.contact.phone);
       })
       .catch(error => {
         console.log("ERROR: " + error);
@@ -186,7 +208,7 @@ class App extends Component {
         <main>
           <div id="map"></div>
         </main>
-        <Information name={locName} address={locAddress} bestPhoto = {bestPhoto}/>
+        <Information name={locName} address={locAddress} bestPhoto = {bestPhoto} phone = {phone} photos = {photos} attributes = {attributes} categories = {categories}/>
       </div>
     );
   }
