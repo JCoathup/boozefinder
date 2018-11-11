@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 import Information from './Information';
 import {FOURSQUARE, GOOGLE} from './Config';
-let pos, infowindow, userInfoWindow, userMarker, locName, locAddress, locCity, currentLocation;
+let pos, infowindow, userInfoWindow, userMarker, locName, locAddress, currentLocation, bestPhoto;
 
 class App extends Component {
   state = {
@@ -79,7 +79,6 @@ class App extends Component {
     this.state.venues.map(myVenue => {
       let locationName = myVenue.venue.name;
       let locationAddress =  myVenue.venue.location.address;
-      let locationCity = myVenue.venue.location.city;
       let venueId = myVenue.venue.id;
       let contentString = `${myVenue.venue.name}<br>
                            ${myVenue.venue.location.address}<br>
@@ -98,22 +97,29 @@ class App extends Component {
         console.log(venueId);
         this.setState({currentLocation: locationName});
         locAddress = locationAddress;
-        locCity = locationCity;
-        //infowindow.setContent(contentString);
-        //infowindow.open(map, marker);
         let details = document.querySelector(".details");
+        let _map = document.getElementById("map");
         if ((locName != this.state.currentLocation) || (!details.classList.contains("details--active"))){
           if (locName != this.state.currentLocation){
             this.getVenueInformation(venueId, myVenue);
           }
           console.log("OPEN OR KEEP OPEN");
           details.classList.add("details--active");
-          map.setZoom(14.6);
+          _map.style.height = "70vh";
+          map.setZoom(15.5);
+          let close = document.querySelector("#close");
+          close.addEventListener("click", (e) => {
+            details.classList.remove("details--active");
+            map.setZoom(16);
+            console.log("closing");
+            _map.style.height= "100vh";
+          })
         }
         else {
             details.classList.remove("details--active");
             map.setZoom(16);
             console.log("closing");
+            _map.style.height= "100vh";
         }
         locName = locationName;
       });
@@ -131,8 +137,10 @@ class App extends Component {
       });
     } else {
       userMarker.setPosition(newPos);
+      userMarker.addListener ("click", (e) => {
+        this.getVenues();
+      })
     }
-
   }
   //get individual Venue information (detailed)
   getVenueInformation = (venueId, myVenue) => {
@@ -146,10 +154,23 @@ class App extends Component {
     axios.get(endPoint2 + new URLSearchParams(params))
       .then(response => {
         console.log(response.data.response.venue);
-        console.log("best photo", response.data.response.venue.bestPhoto.prefix+300+response.data.response.venue.bestPhoto.suffix);
-        console.log(response.data.response.venue.categories[0].name);//bar type
-        console.log("is it open", response.data.response.venue.hours.isOpen);
+        console.log("best photo", response.data.response.venue.bestPhoto.prefix+100+response.data.response.venue.bestPhoto.suffix);
+        bestPhoto = response.data.response.venue.bestPhoto.prefix+100+response.data.response.venue.bestPhoto.suffix;
+        console.log("categories", response.data.response.venue.categories[0].name);
+        let isOpen = document.querySelector(".isOpen");
+        if (response.data.response.venue.hours){
+          console.log("is it open", response.data.response.venue.hours.isOpen);
+          isOpen.style.color = "green";
+        } else if (response.data.response.venue.hours == undefined){
+          isOpen.style.color = "yellow";
+        }
+        else{
+          isOpen.style.color = "red";
+        }
         console.log("has food menu", response.data.response.venue.hasMenu);
+        console.log("Venue photos", response.data.response.venue.photos.groups[1].count);
+        console.log("description", response.data.response.venue.description);
+        console.log("phone", response.data.response.venue.contact.phone);
       })
       .catch(error => {
         console.log("ERROR: " + error);
@@ -165,7 +186,7 @@ class App extends Component {
         <main>
           <div id="map"></div>
         </main>
-        <Information name={locName} address={locAddress} city={locCity}/>
+        <Information name={locName} address={locAddress} bestPhoto = {bestPhoto}/>
       </div>
     );
   }
