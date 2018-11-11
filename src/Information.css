@@ -12,7 +12,7 @@
 .details--active {
   height:30vh;
   color: #ccc;
-  padding:2vh 2vw 2vh 0;
+  padding:2vh 0vw 2vh 2vw;
 }
 h1, h3, p, .categories{
   display:inline-block;
