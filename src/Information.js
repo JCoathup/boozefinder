@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Information.css';
 
 function Information (props) {
-  return <div className = "details">
+  return <div className = "details"><div id = "close">X</div>
           <div className ="venueInfo">
             <h1><sup className="isOpen">&#9679;</sup>{props.name}</h1>
             <div className = "categories">(
@@ -22,7 +22,6 @@ function Information (props) {
               return <img key={photo} src={photo} />
             })}
             </div>
-            <div id = "close">X</div>
           </div>
          </div>
 }
