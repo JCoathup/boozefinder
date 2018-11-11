@@ -6,7 +6,7 @@
   left:0;
   height:0vh;
   backface-visibility: hidden;
-  width:96vw;
+  width:100vw;
   transition: 0.5s ease;
 }
 .details--active {
