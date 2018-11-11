@@ -6,13 +6,13 @@
   left:0;
   height:0vh;
   backface-visibility: hidden;
-  width:100vw;
+  width:96vw;
   transition: 0.5s ease;
 }
 .details--active {
   height:30vh;
   color: #ccc;
-  padding:2vh 0 2vh 0;
+  padding:2vh 2vw 2vh 0;
 }
 h1, h3, p, .categories{
   display:inline-block;
@@ -37,7 +37,7 @@ li {
   clear:left;
 }
 .bestPhoto img {
-  margin-right: 0.5vw;
+  margin-right: 1vw;
   float:left;
 }
 h1 {
