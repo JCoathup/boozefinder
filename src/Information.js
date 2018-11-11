@@ -4,15 +4,14 @@ import './Information.css';
 function Information (props) {
   return <div className = "details">
           <div className ="venueInfo">
-            <li className="isOpen"></li>
-            <h1>{props.name}</h1>
+            <h1><sup className="isOpen">&#9679;</sup>{props.name}</h1>
             <div className = "categories">(
             {props.categories.map((category) => {
               return <span className = "category" key={category}>{category},</span>
             })}
             )</div>
             <p>{props.address}</p>
-            <p>{props.phone}</p><br />
+            <p><a href={props.phone}>{props.phone}</a></p><br />
             <div className = "attributes">
             {props.attributes.map((attribute) => {
               return <span className = "attribute" key={attribute}>{attribute}</span>
