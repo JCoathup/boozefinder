@@ -30,4 +30,5 @@ html, body {
 }
 .lightbox img {
   margin-top: -250px;
+  max-width:500px;
 }
