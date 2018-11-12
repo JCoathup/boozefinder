@@ -8,7 +8,7 @@ html, body {
 }
 .lightbox {
 	/** Default lightbox to hidden */
-  padding-top:25vh;
+  padding-top:50vh;
 	/** Position and style */
 	position: fixed;
 	z-index: 999;
