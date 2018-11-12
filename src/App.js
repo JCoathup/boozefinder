@@ -203,9 +203,9 @@ class App extends Component {
           console.log(largeImage.prefix+"500"+largeImage.suffix);
           lightbox.innerHTML = `<img src=${largeImage.prefix+"500"+largeImage.suffix} />`;
         }
-        if (e.target && e.target.className === "lightbox-target"){
+        if (e.target && e.target.className === "lightbox"){
           let lightbox = document.querySelector(".lightbox");
-          lightbox.classList.remove("lightbox-target");
+          e.target.classList.remove("lightbox-target");
         }
       });
   }
