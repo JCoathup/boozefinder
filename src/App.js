@@ -105,6 +105,13 @@ class App extends Component {
           details.classList.add("details--active");
           _map.style.height = "70vh";
           map.setZoom(15.5);
+          let lightClose = document.querySelector("#lightClose");
+          if (lightClose !== null){
+            lightClose.addEventListener("click", (e) => {
+              let lightbox = document.querySelector(".lightbox");
+              lightbox.style.display = "none";
+            })
+          }
           let close = document.querySelector("#close");
           close.addEventListener("click", (e) => {
             details.classList.remove("details--active");
@@ -201,9 +208,9 @@ class App extends Component {
           lightbox.classList.add("lightbox-target");
           let largeImage = this.state.currentVenueData.photos.groups[1].items[photos.indexOf(e.target.getAttribute("src"))];
           console.log(largeImage.prefix+"500"+largeImage.suffix);
-          lightbox.innerHTML = `<img src=${largeImage.prefix+"500"+largeImage.suffix} />`;
+          lightbox.innerHTML = `<div id = "lightClose">X</div><img src=${largeImage.prefix+"500"+largeImage.suffix} />`;
         }
-        if (e.target && e.target.className === "lightbox"){
+        if (e.target && e.target.id === "lightClose"){
           let lightbox = document.querySelector(".lightbox");
           lightbox.classList.remove("lightbox-target");
         }
