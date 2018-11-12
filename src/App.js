@@ -205,7 +205,7 @@ class App extends Component {
         }
         if (e.target && e.target.className === "lightbox"){
           let lightbox = document.querySelector(".lightbox");
-          e.target.classList.remove("lightbox-target");
+          lightbox.classList.remove("lightbox-target");
         }
       });
   }
