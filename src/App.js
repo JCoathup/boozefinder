@@ -203,6 +203,10 @@ class App extends Component {
           console.log(largeImage.prefix+"500"+largeImage.suffix);
           lightbox.innerHTML = `<img src=${largeImage.prefix+"500"+largeImage.suffix} />`;
         }
+        if (e.target && e.target.className === "lightbox-target"){
+          let lightbox = document.querySelector(".lightbox");
+          lightbox.classList.remove("lightbox-target");
+        }
       });
   }
 
@@ -213,7 +217,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div class="lightbox"></div>
+        <div className="lightbox"></div>
         <main>
           <div id="map"></div>
         </main>
