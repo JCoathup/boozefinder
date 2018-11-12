@@ -200,8 +200,8 @@ class App extends Component {
           let lightbox = document.querySelector(".lightbox");
           lightbox.classList.add("lightbox-target");
           let largeImage = this.state.currentVenueData.photos.groups[1].items[photos.indexOf(e.target.getAttribute("src"))];
-          console.log(largeImage.prefix+"300"+largeImage.suffix);
-          lightbox.innerHTML = `<img src=${largeImage.prefix+"300"+largeImage.suffix} />`;
+          console.log(largeImage.prefix+"500"+largeImage.suffix);
+          lightbox.innerHTML = `<img src=${largeImage.prefix+"500"+largeImage.suffix} />`;
         }
         if (e.target && e.target.className === "lightbox"){
           let lightbox = document.querySelector(".lightbox");
