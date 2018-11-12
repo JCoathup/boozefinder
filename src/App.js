@@ -3,13 +3,14 @@ import axios from 'axios';
 import './App.css';
 import Information from './Information';
 import {FOURSQUARE, GOOGLE} from './Config';
-let pos, infowindow, userInfoWindow, userMarker, locName, locAddress, currentLocation, bestPhoto, phone, photos = [], attributes = [], categories = [];
+let pos, userMarker, locName, locAddress, currentLocation, phone, photos = [], attributes = [], categories = [];
 
 class App extends Component {
   state = {
     pos: {},
     venues: [],
-    currentLocation: currentLocation
+    currentLocation: currentLocation,
+    currentVenueData: {}
   }
   //get user location
   getLocation = () => {
@@ -80,11 +81,6 @@ class App extends Component {
       let locationName = myVenue.venue.name;
       let locationAddress =  myVenue.venue.location.address;
       let venueId = myVenue.venue.id;
-      let contentString = `${myVenue.venue.name}<br>
-                           ${myVenue.venue.location.address}<br>
-                           ${myVenue.venue.location.city}<br>
-                      <img src="${myVenue.venue.categories[0].icon.prefix}64${myVenue.venue.categories[0].icon.suffix}">`;
-
       let marker = new window.google.maps.Marker({
       position: {lat: myVenue.venue.location.lat, lng: myVenue.venue.location.lng},
         map: map,
@@ -92,7 +88,6 @@ class App extends Component {
         title: myVenue.venue.name
       });
       //call InfoWindow outside of loop so only displays one at a time
-      infowindow = new window.google.maps.InfoWindow;
       marker.addListener('click', (e) => {
         photos = [];
         attributes = [];
@@ -102,8 +97,8 @@ class App extends Component {
         locAddress = locationAddress;
         let details = document.querySelector(".details");
         let _map = document.getElementById("map");
-        if ((locName != this.state.currentLocation) || (!details.classList.contains("details--active"))){
-          if (locName != this.state.currentLocation){
+        if ((locName !== this.state.currentLocation) || (!details.classList.contains("details--active"))){
+          if (locName !== this.state.currentLocation){
             this.getVenueInformation(venueId, myVenue);
           }
           console.log("OPEN OR KEEP OPEN");
@@ -157,7 +152,8 @@ class App extends Component {
     axios.get(endPoint2 + new URLSearchParams(params))
       .then(response => {
         console.log(response.data.response.venue);
-        bestPhoto = response.data.response.venue.bestPhoto.prefix+100+response.data.response.venue.bestPhoto.suffix;
+        this.setState({currentVenueData: response.data.response.venue});
+        console.log("THE STATE IS NOW: ", this.state);
         response.data.response.venue.categories.map((category) => {
           console.log("categories", category.name);
           categories.push(category.name);
@@ -167,8 +163,10 @@ class App extends Component {
           photos.push(photo.prefix+"100"+photo.suffix);
         })
         console.log("phone", response.data.response.venue.contact.phone);
-        if (response.data.response.venue.contact.phone != undefined){
+        if (response.data.response.venue.contact.phone !== undefined){
           phone = response.data.response.venue.contact.phone;
+        } else {
+          phone = " ";
         }
         response.data.response.venue.tips.groups[0].items.map((tip) => {
           console.log("tips", tip.text);
@@ -182,14 +180,14 @@ class App extends Component {
           console.log("ATTRIBUTE", attribute);
         })
         let isOpen = document.querySelector(".isOpen");
-        if (response.data.response.venue.hours == undefined){
+        if (response.data.response.venue.hours === undefined){
           console.log("not sure");
           isOpen.style.color = "yellow";
         }
-        if (response.data.response.venue.hours.isOpen == true){
+        if (response.data.response.venue.hours.isOpen === true){
           console.log("is open");
           isOpen.style.color = "green";
-        } else if (response.data.response.venue.hours.isOpen == false){
+        } else if (response.data.response.venue.hours.isOpen === false){
           console.log("shut");
           isOpen.style.color = "red";
         }
@@ -197,7 +195,17 @@ class App extends Component {
       .catch(error => {
         console.log("ERROR: " + error);
       })
+      document. addEventListener("click", (e) => {
+        if (e.target && e.target.className === "venueImage"){
+          let lightbox = document.querySelector(".lightbox");
+          lightbox.classList.add("lightbox-target");
+          let largeImage = this.state.currentVenueData.photos.groups[1].items[photos.indexOf(e.target.getAttribute("src"))];
+          console.log(largeImage.prefix+"500"+largeImage.suffix);
+          lightbox.innerHTML = `<img src=${largeImage.prefix+"500"+largeImage.suffix} />`;
+        }
+      });
   }
+
   //ReactJS lifecycle hook
   componentDidMount = () => {
     this.getLocation();
@@ -205,10 +213,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <div class="lightbox"></div>
         <main>
           <div id="map"></div>
         </main>
-        <Information name={locName} address={locAddress} bestPhoto = {bestPhoto} phone = {phone} photos = {photos} attributes = {attributes} categories = {categories}/>
+        <Information name={locName} address={locAddress} phone = {phone} photos = {photos} attributes = {attributes} categories = {categories}/>
       </div>
     );
   }

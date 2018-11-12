@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Information.css';
 
 function Information (props) {
@@ -19,7 +19,7 @@ function Information (props) {
             </div>
             <div className = "bestPhoto">
             {props.photos.map((photo) => {
-              return <img key={photo} src={photo} />
+              return <img className = "venueImage" alt="" key={photo} src={photo} />
             })}
             </div>
           </div>
