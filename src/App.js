@@ -202,7 +202,7 @@ class App extends Component {
       .catch(error => {
         console.log("ERROR: " + error);
       })
-      document. addEventListener("click", (e) => {
+      document.addEventListener("click", (e) => {
         if (e.target && e.target.className === "venueImage"){
           let lightbox = document.querySelector(".lightbox");
           lightbox.classList.add("lightbox-target");
