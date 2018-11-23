@@ -148,7 +148,7 @@ class App extends Component {
     }
     let refresh = document.querySelector("#refresh");
     refresh.addEventListener("click", (e) => {
-      this.recentreMap(map);  
+      this.recentreMap(map);
     })
   }
   //get individual Venue information (detailed)
@@ -222,7 +222,6 @@ class App extends Component {
   }
   //recentres map on click
   recentreMap = (map) => {
-    console.log("centreing map");
     map.setCenter(this.state.pos);
   }
   //ReactJS lifecycle hook
