@@ -146,7 +146,10 @@ class App extends Component {
         this.getVenues();
       })
     }
-    this.recentreMap(map);
+    let refresh = document.querySelector("#refresh");
+    refresh.addEventListener("click", (e) => {
+      this.recentreMap(map);  
+    })
   }
   //get individual Venue information (detailed)
   getVenueInformation = (venueId, myVenue) => {
