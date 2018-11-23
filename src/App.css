@@ -42,3 +42,12 @@ html, body {
   font-weight:bold;
   margin-right:2vw;
 }
+#refresh {
+  position:absolute;
+  bottom: 8vh;
+  left: 0.5vw;
+  z-index:10;
+}
+#container {
+  position:relative;
+}

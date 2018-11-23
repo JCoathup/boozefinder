@@ -146,6 +146,7 @@ class App extends Component {
         this.getVenues();
       })
     }
+    this.recentreMap(map);
   }
   //get individual Venue information (detailed)
   getVenueInformation = (venueId, myVenue) => {
@@ -216,7 +217,11 @@ class App extends Component {
         }
       });
   }
-
+  //recentres map on click
+  recentreMap = (map) => {
+    console.log("centreing map");
+    map.setCenter(this.state.pos);
+  }
   //ReactJS lifecycle hook
   componentDidMount = () => {
     this.getLocation();
@@ -226,7 +231,10 @@ class App extends Component {
       <div className="App">
         <div className="lightbox"></div>
         <main>
+        <div id="container">
           <div id="map"></div>
+            <img id="refresh" src="/images/refresh.jpg" />
+          </div>
         </main>
         <Information name={locName} address={locAddress} phone = {phone} photos = {photos} attributes = {attributes} categories = {categories}/>
       </div>
