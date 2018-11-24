@@ -57,7 +57,7 @@ class App extends Component {
   }
   // get venues from Foursquare
   getVenues = (map) => {
-        let Myvalue = String(pos.lat+","+pos.lng);
+    let Myvalue = String(pos.lat+","+pos.lng);
     let parameters = {
       client_id: FOURSQUARE.client_id,
       client_secret: FOURSQUARE.client_secret,
@@ -238,7 +238,7 @@ class App extends Component {
         <main>
         <div id="container">
           <div id="map"></div>
-            <img id="refresh" src="/images/refresh.jpg" />
+            <img id="refresh" src="/images/refresh.png" />
           </div>
         </main>
         <Information name={locName} address={locAddress} phone = {phone} photos = {photos} attributes = {attributes} categories = {categories}/>
