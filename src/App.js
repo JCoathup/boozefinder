@@ -50,16 +50,19 @@ class App extends Component {
     center: {lat: pos.lat, lng: pos.lng},
     zoom: 16
     });
+    console.log(String(pos.lat+","+pos.lng));
+
     this.getVenues(map);
     this.showUserLocation(map);
   }
   // get venues from Foursquare
   getVenues = (map) => {
+        let Myvalue = String(pos.lat+","+pos.lng);
     let parameters = {
       client_id: FOURSQUARE.client_id,
       client_secret: FOURSQUARE.client_secret,
       query: "drinks",
-      ll: this.state.pos.lat+","+this.state.pos.lng,
+      ll: Myvalue, //this.state.pos.lat+","+this.state.pos.lng,
       v: "20182507"
     };
     const endPoint = "https://api.foursquare.com/v2/venues/explore?";
