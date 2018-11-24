@@ -131,6 +131,7 @@ class App extends Component {
         }
         locName = locationName;
       });
+            return this.state.venues;
     })
     this.watchCurrentPosition(map);
   }
@@ -171,10 +172,12 @@ class App extends Component {
         response.data.response.venue.categories.map((category) => {
           console.log("categories", category.name);
           categories.push(category.name);
+          return categories;
         })
         response.data.response.venue.photos.groups[1].items.map((photo) => {
           console.log("Venue photos", photo.prefix+"100"+photo.suffix);
           photos.push(photo.prefix+"100"+photo.suffix);
+          return photos;
         })
         console.log("phone", response.data.response.venue.contact.phone);
         if (response.data.response.venue.contact.phone !== undefined){
@@ -182,9 +185,6 @@ class App extends Component {
         } else {
           phone = " ";
         }
-        response.data.response.venue.tips.groups[0].items.map((tip) => {
-          console.log("tips", tip.text);
-        })
         response.data.response.venue.attributes.groups.map((attribute) => {
           if (!attribute.summary){
             attributes.push(attribute.name);
@@ -192,6 +192,7 @@ class App extends Component {
             attributes.push(attribute.summary);
           }
           console.log("ATTRIBUTE", attribute);
+          return attributes;
         })
         let isOpen = document.querySelector(".isOpen");
         if (response.data.response.venue.hours === undefined){
@@ -238,7 +239,7 @@ class App extends Component {
         <main>
         <div id="container">
           <div id="map"></div>
-            <img id="refresh" src="/images/refresh.png" />
+            <img id="refresh" src="/images/refresh.png" alt="Get my position"/>
           </div>
         </main>
         <Information name={locName} address={locAddress} phone = {phone} photos = {photos} attributes = {attributes} categories = {categories}/>
