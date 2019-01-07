@@ -1,10 +1,10 @@
 let FOURSQUARE = {
-  client_id: "ORCXZEH2S3AYK2PFCHXOQBVV1DAEJNQLMMTIQMORLPI34KL0",
-  client_secret: "Z32R3QF2QLH2K4HJNCYI4ZPKSS5XMDL5CWPHHPG23DFULLA1"
+  client_id: "...",
+  client_secret: "..."
 }
 
 let GOOGLE = {
-  key: "AIzaSyDVMji-eA1V0Dj7Aa_ShGYIMuQBzosZwLU&callback=initMap"
+  key: "..."
 }
 
 export {FOURSQUARE, GOOGLE}
