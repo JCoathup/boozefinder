@@ -1,5 +1,7 @@
 # BoozeFinder
 
+### Author: Jeremy Coathup
+
 [![N|Solid](https://boozefinder.herokuapp.com/images/beer256.png)](https://boozefinder.herokuapp.com)
 
 BoozeFinder is a simple react app that will show the users current location via Google maps and also display the most popular pub and bars in the vicinity. By clicking on any one of the position markers a more detailed description of the establishment can be viewed. The icon in the bottom left hand corner of the screen, when clicked, will re-centre the map at any time. The users position is tracked in real time, so by clicking on the user icon it will re-display the surrounding establishments.
